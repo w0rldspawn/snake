@@ -41,6 +41,8 @@
 *.su
 *.idb
 *.pdb
+*.log
+*.tlog
 
 # Kernel Module Compile Results
 *.mod*
@@ -52,3 +54,4 @@ Mkfile.old
 dkms.conf
 
 .vs/*
+*.user
