@@ -4,41 +4,11 @@
 #include <stdio.h>
 
 
-typedef struct {
-    int x, y;
-    SnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
-} SnakeBody;
-
-
-typedef struct tSnakeBody {
-    int x, y;
-    struct tSnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
-} SnakeBody;
-
-typedef struct tSnakeHead{
-    int x, y;
-    int snakeSize;
-    enum Direction dir;
-    struct tSnakeBody *behind;
-} SnakeHead;
-
-
-
-typedef struct {
-    int x, y;
-} Pokepuff;
-
-
-bool compareCoords(Pokepuff *, SnakeHead *);
-bool compareCoords(Pokepuff *, SnakeBody *);
-bool compareCoords(SnakeHead *, SnakeBody *);
-
-
 SnakeHead *head = NULL;
 Pokepuff *puff = NULL;
 
-// prepared the initial conditions for the game
-int initGame() {
+// prepared the initial conditions for the game, returns 1 if anything fails
+bool initGame() {
 
     if (!initSnake() || !initPuff()) {
         return 1;
@@ -46,7 +16,7 @@ int initGame() {
     return 0;
 }
 // initialises the snek with size 3
-int initSnake() {
+bool initSnake() {
     head = (SnakeHead *)malloc(sizeof(SnakeHead));
     if (head == NULL) {
         printf("ERROR: MEMORY ALLOCATION FAILED");
@@ -78,7 +48,7 @@ int initSnake() {
     return 0;
 }
 // initialises the pokepuff
-int initPuff() {
+bool initPuff() {
     puff = (Pokepuff *)malloc(sizeof(Pokepuff));
     if (puff == NULL) {
         printf("ERROR: MEMORY ALLOCATION FAILED");
@@ -206,7 +176,7 @@ bool isSnekDead() {
     }
     return false;
 }
-// frees everything
+// frees everything, use this and initGame() again to restart the game
 void cleanGame() {
     free(puff);
     SnakeBody *tBody = head->behind;
