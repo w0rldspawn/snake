@@ -2,9 +2,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-bool compareCoords(Pokepuff *, SnakeHead *);
-bool compareCoords(Pokepuff *, SnakeBody *);
-bool compareCoords(SnakeHead *, SnakeBody *);
+typedef struct {
+    int x, y;
+    SnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
+} SnakeBody;
 
 typedef struct {
     int x, y;
@@ -15,12 +16,11 @@ typedef struct {
 
 typedef struct {
     int x, y;
-    SnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
-} SnakeBody;
-
-typedef struct {
-    int x, y;
 } Pokepuff;
+
+bool compareCoords(Pokepuff *, SnakeHead *);
+bool compareCoords(Pokepuff *, SnakeBody *);
+bool compareCoords(SnakeHead *, SnakeBody *);
 
 SnakeHead *head = NULL;
 Pokepuff *puff = NULL;
