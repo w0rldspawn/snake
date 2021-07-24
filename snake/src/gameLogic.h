@@ -29,13 +29,16 @@ typedef struct {
 // its useful for opposite directions to be negatives of one another
 enum Direction { UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2, NO_DIR = 0 };
 
+// only these need to be used outside gameLogic files
+
 bool initGame();
-bool initSnake();
-bool initPuff();
 int tickGame(enum Direction);
+void cleanGame();
+
+// these can be used, but not needed
+
 void movePuff();
 bool isSnekDead();
-void cleanGame();
 bool compareCoordsPuffHead(Pokepuff *, SnakeHead *);
 bool compareCoordsPuffBody(Pokepuff *, SnakeBody *);
 bool compareCoordsHeadBody(SnakeHead *, SnakeBody *);
