@@ -2,43 +2,45 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define BOARD_WIDHT 16
 #define BOARD_HEIGHT 10
-
-int initGame();
-int initSnake();
-int initPuff();
-int tickGame(enum Direction);
-void movePuff();
-bool compareCoords(Pokepuff *, SnakeHead *);
-bool compareCoords(Pokepuff *, SnakeBody *);
-bool compareCoords(SnakeHead *, SnakeBody *);
-bool isSnekDead();
-void cleanGame();
 
 struct TileLocation {
     int x, y;
 };
 
 // its useful for opposite directions to be negatives of one another
-enum Direction { UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2 };
+enum Direction { UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2, NO_DIR = 0 };
 
-typedef struct {
+typedef struct tSnakeBody {
+    int x, y;
+    struct tSnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
+} SnakeBody;
+
+typedef struct tSnakeHead{
     int x, y;
     int snakeSize;
     enum Direction dir;
-    SnakeBody *behind;
+    struct tSnakeBody *behind;
 } SnakeHead;
 
-typedef struct {
-    int x, y;
-    SnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
-} SnakeBody;
 
 typedef struct {
     int x, y;
 } Pokepuff;
+
+int initGame();
+int initSnake();
+int initPuff();
+int tickGame(enum Direction);
+void movePuff();
+bool compareCoordsPuffHead(Pokepuff *, SnakeHead *);
+bool compareCoordsPuffBody(Pokepuff *, SnakeBody *);
+bool compareCoordsHeadBody(SnakeHead *, SnakeBody *);
+bool isSnekDead();
+void cleanGame();
 
 SnakeHead *head = NULL;
 Pokepuff *puff = NULL;
@@ -53,7 +55,6 @@ int initGame() {
 }
 // initialises the snek with size 3
 int initSnake() {
-    // 16x10 board, it'll start almost in the middle
     head = (SnakeHead *)malloc(sizeof(SnakeHead));
     if (head == NULL) {
         printf("ERROR: MEMORY ALLOCATION FAILED");
@@ -106,13 +107,13 @@ void movePuff() {
 
         puffIsInTheRightPlace = true;
 
-        if (compareCoords(puff, head)) {
+        if (compareCoordsPuffHead(puff, head)) {
             puffIsInTheRightPlace = false;
             continue;
         }
         SnakeBody *tBody = head->behind;
         while (tBody) {
-            if (compareCoords(puff, tBody)) {
+            if (compareCoordsPuffBody(puff, tBody)) {
                 puffIsInTheRightPlace = false;
                 break;
             }
@@ -121,25 +122,26 @@ void movePuff() {
     } while (!puffIsInTheRightPlace);
 }
 // return true if they are in the same tile
-bool compareCoords(Pokepuff *p, SnakeHead *sh) {
+bool compareCoordsPuffHead(Pokepuff *p, SnakeHead *sh) {
     if (p->x == sh->x && p->y == sh->y)
         return true;
     return false;
 }
-bool compareCoords(Pokepuff *p, SnakeBody *sb) {
+bool compareCoordsPuffBody(Pokepuff *p, SnakeBody *sb) {
     if (p->x == sb->x && p->y == sb->y)
         return true;
     return false;
 }
-bool compareCoords(SnakeHead *sh, SnakeBody *sb) {
+bool compareCoordsHeadBody(SnakeHead *sh, SnakeBody *sb) {
     if (sh->x == sb->x && sh->y == sb->y)
         return true;
     return false;
 }
-// returns 0 if everything's normal, 1 if the snek dies, 2 if the snek wins
+// returns 0 if everything's normal, 1 if the snek dies, 2 if the snek wins, -1 if error
 int tickGame(enum Direction directionToGo) {
     // if it tries to go backwards it doesnt change direction
-    if (directionToGo == -head->dir) {
+    // and if theres no direction, it stays in the same direction it was going before
+    if (directionToGo == -head->dir || directionToGo == NO_DIR) {
         directionToGo = head->dir;
     }
     int prevX = head->x;
@@ -165,7 +167,7 @@ int tickGame(enum Direction directionToGo) {
     }
     head->dir = directionToGo;
 
-    bool willEatPuff = compareCoords(puff, head);
+    bool willEatPuff = compareCoordsPuffHead(puff, head);
     if (willEatPuff)
         movePuff();
 
@@ -182,12 +184,20 @@ int tickGame(enum Direction directionToGo) {
         tBody = tBody->behind;
         if (!tBody && willEatPuff) {
             SnakeBody *newBody = (SnakeBody *)malloc(sizeof(SnakeBody));
+            if (newBody == NULL) {
+                printf("ERROR: MEMORY ALLOCATION FAILED");
+                return -1;
+            }
             prevBody->behind = newBody;
             newBody->x = prevX;
             newBody->y = prevY;
             head->snakeSize++;
         }
     }
+    if (head->snakeSize == BOARD_WIDHT * BOARD_HEIGHT) {
+        return 2;
+    }
+    return 0;
 }
 
 bool isSnekDead() {
@@ -197,7 +207,7 @@ bool isSnekDead() {
         return true;
     SnakeBody *tBody = head->behind;
     while (tBody) {
-        if (compareCoords(head, tBody)) {
+        if (compareCoordsHeadBody(head, tBody)) {
             return true;
         }
         tBody = tBody->behind;

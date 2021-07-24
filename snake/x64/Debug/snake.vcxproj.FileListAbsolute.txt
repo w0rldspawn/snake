@@ -1,0 +1,1 @@
+C:\codes\c\snake\snake\x64\Debug\snake.vcxproj.CopyComplete
