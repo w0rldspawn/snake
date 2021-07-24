@@ -1,18 +1,14 @@
-
-#include <stdbool.h>
+#include "gameLogic.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#define BOARD_WIDHT 16
-#define BOARD_HEIGHT 10
 
-struct TileLocation {
+typedef struct {
     int x, y;
-};
+    SnakeBody *front, *behind; // if the front is null, then this is the body part immediately behind the head
+} SnakeBody;
 
-// its useful for opposite directions to be negatives of one another
-enum Direction { UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2, NO_DIR = 0 };
 
 typedef struct tSnakeBody {
     int x, y;
@@ -27,20 +23,16 @@ typedef struct tSnakeHead{
 } SnakeHead;
 
 
+
 typedef struct {
     int x, y;
 } Pokepuff;
 
-int initGame();
-int initSnake();
-int initPuff();
-int tickGame(enum Direction);
-void movePuff();
-bool compareCoordsPuffHead(Pokepuff *, SnakeHead *);
-bool compareCoordsPuffBody(Pokepuff *, SnakeBody *);
-bool compareCoordsHeadBody(SnakeHead *, SnakeBody *);
-bool isSnekDead();
-void cleanGame();
+
+bool compareCoords(Pokepuff *, SnakeHead *);
+bool compareCoords(Pokepuff *, SnakeBody *);
+bool compareCoords(SnakeHead *, SnakeBody *);
+
 
 SnakeHead *head = NULL;
 Pokepuff *puff = NULL;
