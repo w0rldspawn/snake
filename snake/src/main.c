@@ -9,7 +9,7 @@
 #include <SDL2/SDL.h>
 #undef main // sdl likes to redefine main
 
-#define gameSpeed 1000 // the game ticks every X ms
+#define gameSpeed 350 // the game ticks every X ms
 
 int getFrameTime();
 
@@ -35,8 +35,6 @@ int main(int argc, char *argv[]) {
         tickBucket += deltaTime;
         if (tickBucket >= gameSpeed) {
             tickBucket -= gameSpeed;
-
-            printf("Ticking game: %d\n", mapSDLArrow(lastArrow));
 
             printf("Game tick: %d\n", tickGame(mapSDLArrow(lastArrow)));
         }

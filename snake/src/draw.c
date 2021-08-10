@@ -40,4 +40,6 @@ void renderTile(SDL_Texture *tex, int x, int y) {
     SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
 
     SDL_RenderCopy(renderer, tex, NULL, &dest);
+
+    return;
 }
