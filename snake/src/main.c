@@ -1,8 +1,8 @@
-#include "gameLogic.h"
-#include "window.h"
-#include "input.h"
 #include "draw.h"
+#include "gameLogic.h"
+#include "input.h"
 #include "texture.h"
+#include "window.h"
 
 #include <stdio.h>
 
@@ -14,60 +14,57 @@
 int getFrameTime();
 
 int main(int argc, char *argv[]) {
-    video_init();
-    if (initGame()) {
-        printf("ERROR: FAILED TO INITIALIZE GAME");
-        exit(1);
-    }
-    
-    loadSnylkeonTextures();
+	video_init();
+	if (initGame()) {
+		printf("ERROR: FAILED TO INITIALIZE GAME");
+		exit(1);
+	}
 
-    int tickBucket = 0;
-    SDL_KeyCode lastArrow = 0;
+	loadSnylkeonTextures();
 
-    int red = 0;
+	int tickBucket = 0;
+	SDL_KeyCode lastArrow = 0;
 
-    while (1) {
-        int deltaTime = getFrameTime();
+	int red = 0;
 
-        processInput(&lastArrow);
+	while (1) {
+		int deltaTime = getFrameTime();
 
-        tickBucket += deltaTime;
-        if (tickBucket >= gameSpeed) {
-            tickBucket -= gameSpeed;
+		processInput(&lastArrow);
 
-            printf("Game tick: %d\n", tickGame(mapSDLArrow(lastArrow)));
-        }
+		tickBucket += deltaTime;
+		if (tickBucket >= gameSpeed) {
+			tickBucket -= gameSpeed;
 
-        // RENDERING
+			printf("Game tick: %d\n", tickGame(mapSDLArrow(lastArrow)));
+		}
 
-        clearScreen();
+		// RENDERING
 
-        renderGame();
+		clearScreen();
 
-        SDL_RenderPresent(renderer);
+		renderGame();
 
-    }
+		SDL_RenderPresent(renderer);
+	}
 
-    video_shutdown();
-    return 0;
+	video_shutdown();
+	return 0;
 }
-
 
 int getFrameTime() {
-    static uint32_t lastTick;
-    static uint32_t currentTick;
+	static uint32_t lastTick;
+	static uint32_t currentTick;
 
-    static bool firstFrame = true;
-    if (firstFrame) {
-        lastTick = SDL_GetTicks();
-        firstFrame = false;
-    }
+	static bool firstFrame = true;
+	if (firstFrame) {
+		lastTick = SDL_GetTicks();
+		firstFrame = false;
+	}
 
-    currentTick = SDL_GetTicks();
-    int deltaTime = currentTick - lastTick;
-    lastTick = currentTick;
+	currentTick = SDL_GetTicks();
+	int deltaTime = currentTick - lastTick;
+	lastTick = currentTick;
 
-    return deltaTime;
+	return deltaTime;
 }
-
