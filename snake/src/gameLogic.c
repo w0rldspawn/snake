@@ -46,6 +46,7 @@ static bool initSnakeBody() {
     body2->x = BOARD_WIDHT / 2 + 2;
     body2->y = BOARD_HEIGHT / 2;
     body2->front = body1;
+    body2->behind = NULL;
 
     return 0;
 }
