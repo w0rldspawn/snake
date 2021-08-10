@@ -1,8 +1,12 @@
 #pragma once
 #include <stdbool.h>
+#include <stdint.h>
 
 #define BOARD_WIDHT 16
 #define BOARD_HEIGHT 10
+
+// its useful for opposite directions to be negatives of one another
+enum Direction { UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2, NO_DIR = 0 };
 
 /*
 struct TileLocation {
@@ -26,16 +30,20 @@ typedef struct {
     int x, y;
 } Pokepuff;
 
-// its useful for opposite directions to be negatives of one another
-enum Direction { UP = 1, DOWN = -1, LEFT = 2, RIGHT = -2, NO_DIR = 0 };
+extern SnakeHead *head;
+extern Pokepuff *puff;
 
-bool initGame();
-bool initSnake();
-bool initPuff();
+// only these need to be used outside gameLogic files
+
+bool initGame(void);
 int tickGame(enum Direction);
+void cleanGame(void);
+
+// these can be used, but not needed
+
 void movePuff();
 bool isSnekDead();
-void cleanGame();
 bool compareCoordsPuffHead(Pokepuff *, SnakeHead *);
 bool compareCoordsPuffBody(Pokepuff *, SnakeBody *);
 bool compareCoordsHeadBody(SnakeHead *, SnakeBody *);
+
