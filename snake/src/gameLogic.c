@@ -136,6 +136,8 @@ int tickGame(enum Direction directionToGo) {
 	}
 	head->dir = directionToGo;
 
+	printf("head dir: %d\n", head->dir);
+
 	printf("head x: %d  | head y: %d\n", head->x, head->y);
 
 	bool willEatPuff = compareCoordsPuffHead(puff, head);
