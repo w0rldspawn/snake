@@ -62,3 +62,8 @@ video_shutdown(void)
 {
 	SDL_DestroyWindow(window);
 }
+
+void nextFramePls() {
+    SDL_GL_SwapWindow(window);
+    return;
+}

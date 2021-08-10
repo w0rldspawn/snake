@@ -8,3 +8,4 @@
 
 void video_init(void);
 void video_shutdown(void);
+void nextFramePls();

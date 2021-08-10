@@ -84,6 +84,8 @@ void movePuff() {
             tBody = tBody->behind;
         }
     } while (!puffIsInTheRightPlace);
+
+    return;
 }
 // return true if they are in the same tile
 bool compareCoordsPuffHead(Pokepuff *p, SnakeHead *sh) {
@@ -190,4 +192,6 @@ void cleanGame() {
         free(tBody->front);
     }
     free(tBody);
+
+    return;
 }
