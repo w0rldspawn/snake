@@ -11,7 +11,7 @@ Pokepuff *puff = NULL;
 // prepared the initial conditions for the game, returns 1 if anything fails
 bool initGame() {
 
-    if (!initSnakeBody() || !initPuff()) {
+    if (initSnakeBody() || initPuff()) {
         cleanGame();
         return 1;
     }
@@ -117,16 +117,16 @@ int tickGame(enum Direction directionToGo) {
     int prevY = head->y;
     switch (directionToGo) {
     case UP:
-        head->y++;
+        head->y--;
         break;
     case DOWN:
-        head->y--;
+        head->y++;
         break;
     case LEFT:
         head->x--;
         break;
     case RIGHT:
-        head->y++;
+        head->x++;
         break;
     }
     if (isSnekDead()) {
@@ -135,6 +135,8 @@ int tickGame(enum Direction directionToGo) {
         return 1;
     }
     head->dir = directionToGo;
+
+    printf("head x: %d  | head y: %d\n", head->x, head->y);
 
     bool willEatPuff = compareCoordsPuffHead(puff, head);
     if (willEatPuff)
@@ -148,7 +150,8 @@ int tickGame(enum Direction directionToGo) {
         tBody->x = prevX;
         tBody->y = prevY;
         prevX = auxX;
-        prevX = auxY;
+        prevY = auxY;
+        printf("body x: %d  | body y: %d\n", tBody->x, tBody->y);
         SnakeBody *prevBody = tBody;
         tBody = tBody->behind;
         if (!tBody && willEatPuff) {
@@ -160,8 +163,10 @@ int tickGame(enum Direction directionToGo) {
             prevBody->behind = newBody;
             newBody->x = prevX;
             newBody->y = prevY;
+            newBody->behind = NULL;
             head->snakeSize++;
         }
+
     }
     if (head->snakeSize == BOARD_WIDHT * BOARD_HEIGHT) {
         return 2;
@@ -177,6 +182,7 @@ bool isSnekDead() {
     SnakeBody *tBody = head->behind;
     while (tBody) {
         if (compareCoordsHeadBody(head, tBody)) {
+            printf("SNEK DIED BECAUSE HEAD_XY = %d %d and BODY_XY = %d %d\n", head->x, head->y, tBody->x, tBody->y);
             return true;
         }
         tBody = tBody->behind;

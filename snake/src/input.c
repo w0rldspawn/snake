@@ -6,7 +6,7 @@ void processInput(SDL_KeyCode *lastArrow) {
     while (SDL_PollEvent(&e)) {
         switch (e.type) {
         case SDL_KEYDOWN:
-            printf("Key down\n");
+            //printf("Key down\n");
             SDL_KeyCode key = e.key.keysym.sym;
             if (key == SDLK_UP || key == SDLK_DOWN || key == SDLK_RIGHT || key == SDLK_LEFT) {
                 *lastArrow = key;
@@ -15,7 +15,7 @@ void processInput(SDL_KeyCode *lastArrow) {
             }
             break;
         case SDL_KEYUP:
-            printf("Key up\n");
+            //printf("Key up\n");
             break;
         case SDL_QUIT:
             exit(0);

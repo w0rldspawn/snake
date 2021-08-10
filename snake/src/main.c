@@ -1,18 +1,26 @@
 #include "gameLogic.h"
 #include "window.h"
 #include "input.h"
+#include "draw.h"
+#include "texture.h"
+
 #include <stdio.h>
 
 #include <SDL2/SDL.h>
 #undef main // sdl likes to redefine main
 
-#define gameSpeed 500 // the game ticks every X ms
+#define gameSpeed 1000 // the game ticks every X ms
 
 int getFrameTime();
 
 int main(int argc, char *argv[]) {
     video_init();
-    initGame();
+    if (initGame()) {
+        printf("ERROR: FAILED TO INITIALIZE GAME");
+        exit(1);
+    }
+    
+    loadSnylkeonTextures();
 
     int tickBucket = 0;
     SDL_KeyCode lastArrow = 0;
@@ -30,12 +38,14 @@ int main(int argc, char *argv[]) {
 
             printf("Ticking game: %d\n", mapSDLArrow(lastArrow));
 
-            // tickGame(mapSDLArrow(lastArrow));
+            printf("Game tick: %d\n", tickGame(mapSDLArrow(lastArrow)));
         }
 
         // RENDERING
 
-        SDL_RenderClear(renderer);
+        clearScreen();
+
+        renderGame();
 
         SDL_RenderPresent(renderer);
 

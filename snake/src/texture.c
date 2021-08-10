@@ -3,6 +3,7 @@
 #include "window.h"
 
 tSnyl *texSnylkeon;
+SDL_Texture *texPuff;
 
 void loadSnylkeonTextures() {
 
@@ -17,6 +18,7 @@ void loadSnylkeonTextures() {
     texSnylkeon->head = loadTexture("sprites/snylkeon/head.png");
     texSnylkeon->body = loadTexture("sprites/snylkeon/body.png");
     texSnylkeon->curve = loadTexture("sprites/snylkeon/curve.png");
+    texPuff = loadTexture("sprites/snylkeon/puff.png");
 
     return;
 }

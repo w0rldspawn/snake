@@ -11,6 +11,7 @@ typedef struct  {
 } tSnyl;
 
 extern tSnyl *texSnylkeon;
+extern SDL_Texture *texPuff;
 
 void loadSnylkeonTextures(void);
 SDL_Texture *loadTexture(char *path);
