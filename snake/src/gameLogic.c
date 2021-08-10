@@ -1,7 +1,9 @@
 #include "gameLogic.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+static bool initSnakeBody();
+static bool initPuff();
 
 SnakeHead *head = NULL;
 Pokepuff *puff = NULL;

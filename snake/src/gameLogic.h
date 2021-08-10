@@ -1,5 +1,6 @@
 #pragma once
 #include <stdbool.h>
+#include <stdint.h>
 
 #define BOARD_WIDHT 16
 #define BOARD_HEIGHT 10
@@ -42,3 +43,6 @@ bool isSnekDead();
 bool compareCoordsPuffHead(Pokepuff *, SnakeHead *);
 bool compareCoordsPuffBody(Pokepuff *, SnakeBody *);
 bool compareCoordsHeadBody(SnakeHead *, SnakeBody *);
+
+extern SnakeHead *head;
+extern Pokepuff *puff;
