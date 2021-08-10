@@ -62,7 +62,18 @@ void renderTile(SDL_Texture *tex, int x, int y) {
     dest.y = y * 80;
     SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
 
-    SDL_RenderCopy(renderer, tex, NULL, &dest);
+    double angle = 0;
+    SnakeBody *tBody = head;
+    if (tBody->x < tBody->behind->x)
+        angle = 270;
+    if (tBody->x > tBody->behind->x)
+        angle = 90;
+    if (tBody->y < tBody->behind->y)
+        angle = 0;
+    if (tBody->y > tBody->behind->y)
+        angle = 180;
+
+    SDL_RenderCopyEx(renderer, tex, NULL, &dest, angle, NULL, SDL_FLIP_NONE);
 
     return;
 }
