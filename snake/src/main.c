@@ -8,7 +8,7 @@
 
 #define gameSpeed 500 // the game ticks every X ms
 
-
+int getFrameTime();
 
 int main(int argc, char *argv[]) {
     video_init();
@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
 
     int tickBucket = 0;
     SDL_KeyCode lastArrow = 0;
+
+    int red = 0;
 
     while (1) {
         int deltaTime = getFrameTime();
@@ -27,11 +29,16 @@ int main(int argc, char *argv[]) {
             tickBucket -= gameSpeed;
 
             printf("Ticking game: %d\n", mapSDLArrow(lastArrow));
-            
+
             // tickGame(mapSDLArrow(lastArrow));
         }
 
-        nextFramePls();
+        // RENDERING
+
+        SDL_RenderClear(renderer);
+
+        SDL_RenderPresent(renderer);
+
     }
 
     video_shutdown();

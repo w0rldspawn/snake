@@ -21,6 +21,8 @@ void processInput(SDL_KeyCode *lastArrow) {
             exit(0);
         }
     }
+
+    return;
 }
 
 enum Direction mapSDLArrow(SDL_KeyCode lastArrow) {
